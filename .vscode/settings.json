@@ -9,9 +9,9 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "MySQL Local",
-            "database": "company_db",
+            "database": "ABC_DATA",
             "username": "root",
+            "name": "MYSQL Local",
             "askForPassword": true
         }
     ]

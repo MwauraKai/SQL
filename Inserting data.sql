@@ -6,4 +6,10 @@ VALUES
 ('Susan Kihaguru','susie@gmail.com',51,'DIRECTOR');
 
 
-
+INSERT INTO departments (dept_name)
+VALUES
+('FINANCE'),
+('HR'),
+('IT'),
+('DIRECTOR'),
+('SUPPLY CHAIN');
