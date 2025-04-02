@@ -74,11 +74,121 @@ VALUES
 ('Library'),
 ('Finance');
 
+USE Parks_and_Recreation;
+
+SELECT first_name, last_name, salary,
+CASE
+	WHEN salary >= 50000 THEN salary * 0.90
+	WHEN salary BETWEEN 40000 AND 50000 THEN salary * 0.93
+	WHEN salary BETWEEN 30000 AND 40000 THEN salary * 0.95
+	WHEN salary <= 30000 THEN salary * 0.97
+	ELSE salary
+END AS salary_after_reduction
+FROM employee_salary;
+
+USE Parks_and_Recreation;
+
+SELECT ep.first_name,ep.last_name,ep.age,s.salary
+FROM employee_demographics ep
+JOIN employee_salary s ON ep.employee_id= s.employee_id;
+
+SELECT first_name ,last_name,salary
+FROM employee_salary
+WHERE salary >(
+SELECT AVG (salary)
+FROM employee_salary);
+
+SELECT first_name, last_name, salary
+FROM employee_salary
+WHERE salary = (
+    SELECT MIN(salary)
+    FROM employee_salary
+);
+
+SELECT * FROM(
+SELECT dept_id,AVG(salary) AS avg
+FROM employee_salary
+GROUP BY dept_id) AS dept_sal
+WHERE avg >50000;
+
+-- string functions
+SELECT first_name,LENGTH (first_name)
+FROM employee_demographics;
+
+SELECT first_name, LEFT (first_name, 3)
+FROM employee_demographics;
+
+-- SUBSTRINGS
+SELECT * from employee_demographics;
+
+SELECT birth_date , SUBSTRING(birth_date,4) AS birth_year
+FROM employee_demographics;
 
 
+-- Wild cards
+--  starts with b
+SELECT first_name
+FROM employee_demographics 
+WHERE first_name LIKE 'b%';
+
+-- anywhere in the name
+SELECT first_name
+FROM employee_demographics 
+WHERE first_name LIKE '%b%';
+
+-- ends in the name
+SELECT first_name
+FROM employee_demographics 
+WHERE first_name LIKE '%a';
+
+-- one character at the beginning the a then the rest
+SELECT first_name
+FROM employee_demographics 
+WHERE first_name LIKE '_a%';
+
+-- exact match
+SELECT first_name
+FROM employee_demographics 
+WHERE first_name LIKE 'a';
+
+SELECT first_name
+FROM employee_demographics
+WHERE first_name LIKE '[a b d]%';
+
+/* TRIGGERS AND EVENTS 
+ READ STORED PROCEDURES
+ SYNTAX
+ CREATE TRIGGER  trigger_name
+ BEFORE /AFTER to INSERT ,UPDATE ,DELETE
+ ON  table 
+ FOR EACH ROW
+ BEGIN
+ -----
+ 
+ END*/
+ 
+ DELIMITER $$
+ CREATE TRIGGER assign_new_hire_salary
+ AFTER INSERT
+ ON employee_demographics
+ FOR EACH ROW
+ BEGIN
+ INSERT INTO employee_salary(employee_id,first_name,last_name,occupation,salary,dept_id)
+  VALUES (NEW.employee_id,NEW.first_name,NEW.last_name,'Teacher',45000,1);
+END$$
+
+DELIMITER ;
 
 
+INSERT INTO employee_demographics (employee_id,first_name,last_name,age,gender,birth_date)
+VALUES (23, 'Annie','Njuhi',24,'Female','2001-02-14');
 
+SELECT * FROM employee_salary;
+
+ 
+ 
+ 
+ 
 
 
 
